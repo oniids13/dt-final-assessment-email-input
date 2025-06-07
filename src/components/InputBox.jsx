@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchEmails } from "../emailMock";
 
 const InputBox = ({
@@ -9,21 +9,25 @@ const InputBox = ({
   setInputValue,
   setRecipients,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     let isMounted = true;
     async function fetchData() {
       try {
         if (!inputValue) return setEmailList([]);
+        setIsLoading(true);
         const emailSuggestions = await fetchEmails(inputValue);
         const filteredSuggestions = emailSuggestions.filter(
           (email) => !recipients.includes(email)
         );
         if (isMounted) {
           setEmailList(filteredSuggestions);
-          console.log(filteredSuggestions);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error fetching emails:", error);
+        setIsLoading(false);
       }
     }
     fetchData();
@@ -55,7 +59,7 @@ const InputBox = ({
   };
 
   return (
-    <div className="input-box">
+    <div className="input">
       {recipients.map((email) => (
         <span
           key={email.value}
@@ -63,16 +67,23 @@ const InputBox = ({
         >
           {email.value}
           {!email.isEmailValid && <span className="error-icon">!</span>}
-          <button onClick={() => handleRemove(email)}>x</button>
+          <button className="delete-btn" onClick={() => handleRemove(email)}>
+            x
+          </button>
         </span>
       ))}
       <input
         type="text"
-        placeholder="Enter recipients..."
+        placeholder={recipients.length === 0 ? "Enter recipients..." : ""}
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleTabEnter}
       />
+      {isLoading && (
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      )}
     </div>
   );
 };

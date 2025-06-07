@@ -23,20 +23,22 @@ function App() {
 
   return (
     <div className="App">
-      <InputBox
-        setEmailList={setEmailList}
-        recipients={recipients}
-        handleRemove={removeRecipientClick}
-        inputValue={input}
-        setInputValue={setInput}
-        setRecipients={setRecipients}
-      />
-      {emailList.length > 0 && (
-        <SuggestionList
-          emailLists={emailList}
-          handleClick={addRecipientClick}
+      <div className="input-box">
+        <InputBox
+          setEmailList={setEmailList}
+          recipients={recipients}
+          handleRemove={removeRecipientClick}
+          inputValue={input}
+          setInputValue={setInput}
+          setRecipients={setRecipients}
         />
-      )}
+        {emailList.length > 0 && (
+          <SuggestionList
+            emailLists={emailList}
+            handleClick={addRecipientClick}
+          />
+        )}
+      </div>
     </div>
   );
 }

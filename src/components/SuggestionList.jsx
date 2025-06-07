@@ -1,14 +1,16 @@
 const SuggestionList = ({ emailLists, handleClick }) => {
   return (
-    <>
-      <ul>
-        {emailLists.map((email, index) => (
-          <li key={index} onClick={() => handleClick(email)}>
-            {email}
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className="suggestion-list">
+      {emailLists.map((email, index) => (
+        <li
+          key={index}
+          className="suggestion-item"
+          onClick={() => handleClick(email)}
+        >
+          {email}
+        </li>
+      ))}
+    </ul>
   );
 };
 
